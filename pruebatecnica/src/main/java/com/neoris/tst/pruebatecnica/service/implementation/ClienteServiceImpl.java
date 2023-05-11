@@ -3,17 +3,19 @@ package com.neoris.tst.pruebatecnica.service.implementation;
 import com.neoris.tst.pruebatecnica.domain.Cliente;
 import com.neoris.tst.pruebatecnica.domain.Genero;
 import com.neoris.tst.pruebatecnica.domain.Persona;
-import com.neoris.tst.pruebatecnica.exception.*;
+import com.neoris.tst.pruebatecnica.exception.ClienteException;
+import com.neoris.tst.pruebatecnica.exception.GeneroException;
+import com.neoris.tst.pruebatecnica.exception.PersonaException;
 import com.neoris.tst.pruebatecnica.mapper.BuscarUsuarioMapper;
 import com.neoris.tst.pruebatecnica.mapper.CrearUsuarioMapper;
 import com.neoris.tst.pruebatecnica.mapper.ModificarUsuarioMapper;
 import com.neoris.tst.pruebatecnica.repository.ClienteRepository;
 import com.neoris.tst.pruebatecnica.repository.PersonaRepository;
-import com.neoris.tst.pruebatecnica.request.ActivarUsuarioRequest;
 import com.neoris.tst.pruebatecnica.request.CrearUsuarioRequest;
-import com.neoris.tst.pruebatecnica.request.InactivarUsuarioRequest;
 import com.neoris.tst.pruebatecnica.request.ModificarUsuarioRequest;
-import com.neoris.tst.pruebatecnica.response.*;
+import com.neoris.tst.pruebatecnica.response.BuscarUsuarioResponse;
+import com.neoris.tst.pruebatecnica.response.CrearUsuarioResponse;
+import com.neoris.tst.pruebatecnica.response.ModificarUsuarioResponse;
 import com.neoris.tst.pruebatecnica.service.ClienteService;
 import com.neoris.tst.pruebatecnica.service.GeneroService;
 import com.neoris.tst.pruebatecnica.service.PersonaService;
@@ -72,57 +74,6 @@ public class ClienteServiceImpl implements ClienteService {
                 .findByPersonaId(persona.getId()).orElseThrow(
                         () ->new ClienteException(
                                 String.format(CLIENTE_NO_EXISTE_POR_NOMBRE_MENSAJE, persona.getIdentificacion())));
-    }
-
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED)
-    public InactivarUsuarioResponse inactivarUsuario(InactivarUsuarioRequest inactivarUsuarioRequest)
-            throws PersonaException, ClienteException {
-        // Consultar Cliente
-        Cliente cliente = buscarClientePorIdentificacion(inactivarUsuarioRequest.getIdentificacion());
-
-        // Consultar Persona
-        Persona persona = cliente.getPersona();
-
-        if(!persona.getEstado() && !cliente.getEstado()) {
-            throw new PersonaException(
-                    String.format(PERSONA_YA_ESTA_INACTIVA_MENSAJE, inactivarUsuarioRequest.getIdentificacion()));
-        }
-
-        persona = personaService.inactivarPersona(persona);
-        cliente.setEstado(false);
-        clienteRepository.save(cliente);
-
-        return InactivarUsuarioResponse.builder()
-                .estado(persona.getEstado())
-                .identificacion(persona.getIdentificacion())
-                .nombre(persona.getNombre())
-                .build();
-    }
-
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED)
-    public ActivarUsuarioResponse activarUsuario(ActivarUsuarioRequest activarUsuarioRequest)
-            throws PersonaException, ClienteException {
-        Cliente cliente = buscarClientePorIdentificacion(activarUsuarioRequest.getIdentificacion());
-
-        // Consultar Persona
-        Persona persona = cliente.getPersona();
-
-        if(persona.getEstado() && cliente.getEstado()) {
-            throw new PersonaException(
-                    String.format(PERSONA_YA_ESTA_ACTIVA_MENSAJE, activarUsuarioRequest.getIdentificacion()));
-        }
-
-        persona = personaService.activarPersona(persona);
-        cliente.setEstado(true);
-        clienteRepository.save(cliente);
-
-        return ActivarUsuarioResponse.builder()
-                .estado(persona.getEstado())
-                .identificacion(persona.getIdentificacion())
-                .nombre(persona.getNombre())
-                .build();
     }
 
     @Override

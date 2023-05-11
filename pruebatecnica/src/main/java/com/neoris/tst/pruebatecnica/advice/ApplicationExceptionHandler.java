@@ -1,6 +1,8 @@
 package com.neoris.tst.pruebatecnica.advice;
 
-import com.neoris.tst.pruebatecnica.exception.*;
+import com.neoris.tst.pruebatecnica.exception.ClienteException;
+import com.neoris.tst.pruebatecnica.exception.GeneroException;
+import com.neoris.tst.pruebatecnica.exception.PersonaException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -42,14 +44,6 @@ public class ApplicationExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(CuentaException.class)
-    public Map<String, String> cuentaException(CuentaException ex) {
-        Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("errorMessage", ex.getMessage());
-        return errorMap;
-    }
-
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(GeneroException.class)
     public Map<String, String> generoException(GeneroException ex) {
         Map<String, String> errorMap = new HashMap<>();
@@ -58,32 +52,8 @@ public class ApplicationExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(MovimientoException.class)
-    public Map<String, String> movimientoException(MovimientoException ex) {
-        Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("errorMessage", ex.getMessage());
-        return errorMap;
-    }
-
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(PersonaException.class)
     public Map<String, String> personaException(PersonaException ex) {
-        Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("errorMessage", ex.getMessage());
-        return errorMap;
-    }
-
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(TipoCuentaException.class)
-    public Map<String, String> tipoCuentaException(TipoCuentaException ex) {
-        Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("errorMessage", ex.getMessage());
-        return errorMap;
-    }
-
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(TipoMovimientoException.class)
-    public Map<String, String> tipoMovimientoException(TipoMovimientoException ex) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("errorMessage", ex.getMessage());
         return errorMap;

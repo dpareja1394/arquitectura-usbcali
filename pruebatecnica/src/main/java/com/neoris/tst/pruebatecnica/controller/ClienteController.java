@@ -3,11 +3,9 @@ package com.neoris.tst.pruebatecnica.controller;
 import com.neoris.tst.pruebatecnica.exception.ClienteException;
 import com.neoris.tst.pruebatecnica.exception.GeneroException;
 import com.neoris.tst.pruebatecnica.exception.PersonaException;
-import com.neoris.tst.pruebatecnica.request.ActivarUsuarioRequest;
 import com.neoris.tst.pruebatecnica.request.CrearUsuarioRequest;
-import com.neoris.tst.pruebatecnica.request.InactivarUsuarioRequest;
-import com.neoris.tst.pruebatecnica.request.ModificarUsuarioRequest;
-import com.neoris.tst.pruebatecnica.response.*;
+import com.neoris.tst.pruebatecnica.response.BuscarUsuarioResponse;
+import com.neoris.tst.pruebatecnica.response.CrearUsuarioResponse;
 import com.neoris.tst.pruebatecnica.service.ClienteService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -36,27 +34,6 @@ public class ClienteController {
         return new ResponseEntity(clienteService.crearUsuario(crearUsuarioRequest), HttpStatus.CREATED);
     }
 
-    @PutMapping("/inactivar")
-    public ResponseEntity<InactivarUsuarioResponse> inactivarUsuario(
-            @RequestBody @Valid InactivarUsuarioRequest inactivarUsuarioRequest)
-            throws PersonaException, ClienteException {
-        return ResponseEntity.ok(clienteService.inactivarUsuario(inactivarUsuarioRequest));
-    }
-
-    @PutMapping("/activar")
-    public ResponseEntity<ActivarUsuarioResponse> activarUsuario(
-            @RequestBody @Valid ActivarUsuarioRequest activarUsuarioRequest)
-            throws PersonaException, ClienteException {
-        return ResponseEntity.ok(clienteService.activarUsuario(activarUsuarioRequest));
-    }
-
-    @PutMapping("/modificar")
-    public ResponseEntity<ModificarUsuarioResponse> modificarUsuario(
-            @RequestBody @Valid ModificarUsuarioRequest modificarUsuarioRequest)
-            throws PersonaException, ClienteException, GeneroException {
-        return ResponseEntity.ok(clienteService.modificarUsuario(modificarUsuarioRequest));
-    }
-
     @GetMapping("/buscar/{identificacion}")
     public ResponseEntity<BuscarUsuarioResponse> buscarUsuario(
             @PathVariable @NotNull @NotEmpty String identificacion) throws PersonaException, ClienteException {
@@ -72,12 +49,6 @@ public class ClienteController {
     public ResponseEntity<List<BuscarUsuarioResponse>> buscarTodosLosClientesPorEstado(
             @PathVariable @NotNull Boolean estado) {
         return ResponseEntity.ok(clienteService.buscarTodosLosClientesPorEstado(estado));
-    }
-
-    @DeleteMapping("/eliminar/{identificacion}")
-    public ResponseEntity<String> eliminarUsuario(
-            @PathVariable @NotNull @NotEmpty String identificacion) throws PersonaException, ClienteException {
-        return ResponseEntity.ok(clienteService.eliminarUsuario(identificacion));
     }
 
 }

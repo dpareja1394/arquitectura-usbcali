@@ -4,11 +4,11 @@ import com.neoris.tst.pruebatecnica.domain.Cliente;
 import com.neoris.tst.pruebatecnica.exception.ClienteException;
 import com.neoris.tst.pruebatecnica.exception.GeneroException;
 import com.neoris.tst.pruebatecnica.exception.PersonaException;
-import com.neoris.tst.pruebatecnica.request.ActivarUsuarioRequest;
 import com.neoris.tst.pruebatecnica.request.CrearUsuarioRequest;
-import com.neoris.tst.pruebatecnica.request.InactivarUsuarioRequest;
 import com.neoris.tst.pruebatecnica.request.ModificarUsuarioRequest;
-import com.neoris.tst.pruebatecnica.response.*;
+import com.neoris.tst.pruebatecnica.response.BuscarUsuarioResponse;
+import com.neoris.tst.pruebatecnica.response.CrearUsuarioResponse;
+import com.neoris.tst.pruebatecnica.response.ModificarUsuarioResponse;
 
 import java.util.List;
 
@@ -20,9 +20,6 @@ public interface ClienteService {
 
     Cliente buscarClientePorNombreYEstado(String nombre, boolean estado)
             throws PersonaException, ClienteException;
-
-    InactivarUsuarioResponse inactivarUsuario(InactivarUsuarioRequest inactivarUsuarioRequest) throws PersonaException, ClienteException;
-    ActivarUsuarioResponse activarUsuario(ActivarUsuarioRequest activarUsuarioRequest) throws PersonaException, ClienteException;
 
     ModificarUsuarioResponse modificarUsuario(ModificarUsuarioRequest modificarUsuarioRequest)
             throws GeneroException, PersonaException, ClienteException;
